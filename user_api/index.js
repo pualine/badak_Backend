@@ -2,6 +2,8 @@ import express from "express"
 import mongoose from "mongoose";
 import dotenv from  'dotenv';
 
+import usersRoutes from './routes/user.routes.js';
+
 
 
 // Load env variable
@@ -15,7 +17,7 @@ const app = express();
 app.use(express.json())
 
 // use routes
-// app.use("/api");
+app.use('/users', usersRoutes)
 
 // make connection to database
 await mongoose.connect(process.env.MONGO_URI);
