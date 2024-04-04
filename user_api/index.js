@@ -12,7 +12,7 @@ const app = express();
 
 
 // use middlewares
-app.use(express.json())
+app.use(express.json());
 
 // use routes
 // app.use("/api");
