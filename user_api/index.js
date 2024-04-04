@@ -5,7 +5,7 @@ import dotenv from  'dotenv';
 
 
 // Load env variable
-dotenv.config({path:".env.local"});
+dotenv.config({path:[".env.local"]});
 
 // create express app
 const app = express();
