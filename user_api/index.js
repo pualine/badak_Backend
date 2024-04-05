@@ -2,20 +2,22 @@ import express from "express"
 import mongoose from "mongoose";
 import dotenv from  'dotenv';
 
+import usersRoutes from './routes/user.routes.js';
+
 
 
 // Load env variable
-dotenv.config({path:".env.local"});
+dotenv.config({path:[".env.local"]});
 
 // create express app
 const app = express();
 
 
 // use middlewares
-app.use(express.json())
+app.use(express.json());
 
 // use routes
-// app.use("/api");
+app.use('/api/users', usersRoutes)
 
 // make connection to database
 await mongoose.connect(process.env.MONGO_URI);
