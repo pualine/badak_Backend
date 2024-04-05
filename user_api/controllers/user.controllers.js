@@ -1,5 +1,5 @@
 // Import StudentModel from models/students.models
-import { StudentModel } from "../models/students.models.js";
+import { StudentModel } from "../models/user.models.js";
 
 
 
