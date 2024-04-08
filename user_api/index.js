@@ -6,6 +6,7 @@ import usersRoutes from './routes/user.routes.js';
 
 
 
+
 // Load env variable
 dotenv.config({path:[".env.local"]});
 
@@ -27,4 +28,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, ()=>{
 console.log(`Express server is running on ${PORT}`)
 })
+
 
