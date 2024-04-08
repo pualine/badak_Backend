@@ -4,9 +4,10 @@ const generateToken = (userId) => {
     const payload = {
         user: userId
     };
+
+    const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+
+    return token;
 }
-
-const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn:'1h'});
-
 
 export default generateToken;
