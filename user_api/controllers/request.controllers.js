@@ -25,6 +25,8 @@ export const loginUserRequest = async (req, res) => {
   }
 };
 
+
+
 // Controller function to retrieve all user requests
 export const getAllUserRequests = async (req, res) => {
   try {
@@ -76,17 +78,8 @@ export const deleteUserRequest = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-// Controller function to update all user requests
-export const updateAllRequests = async (req, res) => {
-    try {
-        const { status } = req.body;
-        await UserRequestModel.updateMany({}, { status });
-        res.status(200).json({ message: "All user requests updated successfully" });
-    } catch (error) {
-        console.error("Error updating all user requests:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-};
+
+
 // Controller function to update a user request
 export const updateUserRequest = async (req, res) => {
   try {

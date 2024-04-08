@@ -6,8 +6,7 @@ const userRequestSchema = new mongoose.Schema({
   school: {type: String, required: true},
   certificate: {type: String, required: true},
   program: { type: String, required: true},
-  
-  status: {type: [String],
+  status: {type: [String], required:true,
     enum: ["Verified", "Not verified", "Denied"],
     default: ["Not verified"]
   }
