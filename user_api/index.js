@@ -5,6 +5,7 @@ import usersRoutes from './routes/user.routes.js';
 import requestRoutes from "./routes/request.routes.js";
 import authenticate from "./middlewares/auth.middleware.js";
 import errorHandler from "./middlewares/error.middleware.js";
+import loginRoutes from  "./routes/login.routes.js"
 
 
 
@@ -22,6 +23,7 @@ app.use(express.json());
 // use routes
 app.use('/api/user', usersRoutes);
 app.use('/api/request', authenticate, requestRoutes);
+app.use("/api/login", loginRoutes)
 
 
 // error handling middleware

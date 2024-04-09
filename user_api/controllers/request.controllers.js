@@ -4,7 +4,7 @@ import { UserRequestModel } from "../models/request.models.js";
 export const createUserRequest = async (req, res) => {
   try {
     const { name, school, certificate, program } = req.body;
-    // Assuming we have authentication logic here
+    
 
     // Create a new user request
     const newUserRequest = new UserRequestModel({
