@@ -1,11 +1,11 @@
 // request.routes.js
 import express from 'express';
-import { deleteAllRequests, deleteUserRequest, getAllUserRequests, getUserRequestById, loginUserRequest, updateUserRequest } from "../controllers/request.controllers.js"
+import { createUserRequest, deleteAllRequests, deleteUserRequest, getAllUserRequests, getUserRequestById, updateUserRequest } from "../controllers/request.controllers.js"
 
 const router = express.Router();
 
 // POST route to handle user login requests
-router.post('/login', loginUserRequest);
+router.post('/', createUserRequest);
 router.get('/', getAllUserRequests);
 router.get('/:id', getUserRequestById)
 router.delete('/:id', deleteUserRequest);

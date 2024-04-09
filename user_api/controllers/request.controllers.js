@@ -1,12 +1,10 @@
-import { UserRequestModel } from "../models/request.model.js";
-import { hashPassword } from "../utils/hash-password"; //assuming hash pSWD FUNCTION
+import { UserRequestModel } from "../models/request.modelsjs";
 
-// Controller function to handle user login requests
-export const loginUserRequest = async (req, res) => {
+// Controller function to handle userrequests
+export const createUserRequest = async (req, res) => {
   try {
-    const { name, school, certificate, program, password } = req.body;
-
-    const hashPassword = await hashPassword(password); //Hashing the Password before saving it in DB
+    const { name, school, certificate, program } = req.body;
+    // Assuming we have authentication logic here
 
     // Create a new user request
     const newUserRequest = new UserRequestModel({
@@ -14,8 +12,7 @@ export const loginUserRequest = async (req, res) => {
       school,
       certificate,
       program,
-      password: hashPassword,
-      status: ["Not verified"], // Initial status is "not verified"
+      status: ["Not verified"] // Initial status is "not verified"
     });
 
     // Save the user request to the database
@@ -27,6 +24,8 @@ export const loginUserRequest = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
 
 // Controller function to retrieve all user requests
 export const getAllUserRequests = async (req, res) => {
@@ -56,13 +55,13 @@ export const getUserRequestById = async (req, res) => {
 
 // Controller function to delete all user requests
 export const deleteAllRequests = async (req, res) => {
-  try {
-    await UserRequestModel.deleteMany({});
-    res.status(200).json({ message: "All user requests deleted successfully" });
-  } catch (error) {
-    console.error("Error deleting all user requests:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+    try {
+        await UserRequestModel.deleteMany({});
+        res.status(200).json({ message: "All user requests deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting all user requests:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
 };
 
 // Controller function to delete a user request
@@ -80,22 +79,19 @@ export const deleteUserRequest = async (req, res) => {
   }
 };
 
+
 // Controller function to update a user request
 export const updateUserRequest = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, school, certificate, program, status } = req.body;
-    const updatedUserRequest = await UserRequestModel.findByIdAndUpdate(
-      id,
-      {
-        name,
-        school,
-        certificate,
-        program,
-        status,
-      },
-      { new: true }
-    );
+    const updatedUserRequest = await UserRequestModel.findByIdAndUpdate(id, {
+      name,
+      school,
+      certificate,
+      program,
+      status
+    }, { new: true });
     if (!updatedUserRequest) {
       return res.status(404).json({ error: "User request not found" });
     }
