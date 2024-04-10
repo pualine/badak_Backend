@@ -84,18 +84,28 @@ export const deleteUserRequest = async (req, res) => {
 export const updateUserRequest = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, school, certificate, program, status } = req.body;
-    const updatedUserRequest = await UserRequestModel.findByIdAndUpdate(id, {
-      name,
-      school,
-      certificate,
-      program,
-      status
-    }, { new: true });
+    const { status } = req.body;
+    let statusMessage = "";
+  
+    if (status === "verified") {
+      statusMessage = "Verified";
+    } else if (status === "not-verified") {
+      statusMessage = "Not Verified";
+    } else if (status === "denied") {
+      statusMessage = "Denied";
+    }
+  
+    const updatedUserRequest = await UserRequestModel.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+  
     if (!updatedUserRequest) {
       return res.status(404).json({ error: "User request not found" });
     }
-    res.status(200).json(updatedUserRequest);
+  
+    res.status(200).json({ status: statusMessage });
   } catch (error) {
     console.error("Error updating user request:", error);
     res.status(500).json({ error: "Internal Server Error" });
