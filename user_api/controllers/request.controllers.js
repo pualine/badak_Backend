@@ -1,4 +1,4 @@
-import { UserRequestModel } from "../models/request.models.js";
+import { UserRequestModel } from "../models/request.model.js";
 
 // Controller function to handle userrequests
 export const createUserRequest = async (req, res) => {

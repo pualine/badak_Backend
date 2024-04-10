@@ -1,8 +1,8 @@
 import express from "express"
-import { createLogin, deleteLogin, getAllLogins, getLoginById, updateLogin } from "../controllers/login.controllers";
+import {  checkLoginCredentials, deleteLogin, getAllLogins, getLoginById, updateLogin } from "../controllers/login.controllers.js";
 
 const router = express.Router();
-router.post("/", createLogin);
+router.post("/login", checkLoginCredentials);
 router.get("/", getAllLogins);
 router.get("/", getLoginById);
 router.delete("/", deleteLogin);

@@ -1,26 +1,36 @@
-import { LoginModel } from "../models/login.model.js";
-import generateToken from "../token/token.js";
+import { LoginModel } from "../models/login.models.js";
 import hashPassword from "../utils/hashPassword.js";
 import errorHandler from "../middlewares/error.middleware.js";
 
-// Function to create a new login record
-export const createLogin = async (req, res) => {
+
+// Function to check login credentials
+export const checkLoginCredentials = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password} = req.body;
 
-    // Hash the password before saving it
-    const hashedPassword = await hashPassword(password);
+    // Retrieve user credentials from the database based on the provided username
+    const user = await LoginModel.findOne({ username });
 
-    // Create a new login record
-    const newLogin = new LoginModel({ username, password: hashedPassword });
-    await newLogin.save();
+    // Perform authentication
+    if (!user) {
+      return res.status(401).json({ error: "Invalid username or password" });
+    }
 
-    res.status(201).json({ message: "Login record created successfully" });
+    // Compare the provided password with the hashed password from the database
+    const passwordMatch = await comparePasswords(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ error: "Invalid username or password" });
+    }
+
+    // Respond with success message
+    res.status(200).json({ message: "Login successful" });
   } catch (error) {
     // Handle errors using the error handling middleware
     errorHandler(error, res);
   }
 };
+
+
 
 // Function to retrieve all login records
 export const getAllLogins = async (req, res) => {
@@ -88,4 +98,3 @@ export const deleteLogin = async (req, res) => {
     errorHandler(error, res);
   }
 };
- 

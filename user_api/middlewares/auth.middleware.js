@@ -11,7 +11,7 @@ const authenticate = async (req, res, next) => {
 
     try {
         // Verify token asynchronously
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
         // Attach the decodedToken to the user request
         req.user = decodedToken.user;
