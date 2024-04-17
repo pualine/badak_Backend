@@ -6,7 +6,7 @@ import usersRoutes from './routes/user.routes.js';
 import requestRoutes from "./routes/request.routes.js";
 import authenticate from "./middlewares/auth.middleware.js";
 import errorHandler from "./middlewares/error.middleware.js";
-import loginRoutes from  "./routes/login.routes.js";
+import loginRoutes from "./routes/user.routes.js"
 
 
 

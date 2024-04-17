@@ -1,22 +1,17 @@
-import { UserRequestModel } from "../models/request.model.js";
+import RequestModel from "../models/request.model.js";
 
 // Controller function to handle userrequests
-export const createUserRequest = async (req, res) => {
-  try {
-    const { name, school, certificate, program } = req.body;
-    
+export const createRequest = async (req, res) => {
+  const { name, school, certificate, program } = req.body;
 
+  try {
     // Create a new user request
-    const newUserRequest = new UserRequestModel({
+const request = await RequestModel.create({
       name,
       school,
       certificate,
       program,
-      status: ["Not verified"] // Initial status is "not verified"
     });
-
-    // Save the user request to the database
-    await newUserRequest.save();
 
     res.status(201).json({ message: "User request submitted successfully" });
   } catch (error) {
@@ -28,9 +23,9 @@ export const createUserRequest = async (req, res) => {
 
 
 // Controller function to retrieve all user requests
-export const getAllUserRequests = async (req, res) => {
+export const getAllRequests = async (req, res) => {
   try {
-    const userRequests = await UserRequestModel.find();
+    const userRequests = await RequestModel.find();
     res.status(200).json(userRequests);
   } catch (error) {
     console.error("Error fetching user requests:", error);
@@ -39,13 +34,10 @@ export const getAllUserRequests = async (req, res) => {
 };
 
 // Controller function to retrieve a user request by ID
-export const getUserRequestById = async (req, res) => {
+export const getRequestById = async (req, res) => {
   try {
     const { id } = req.params;
-    const userRequest = await UserRequestModel.findById(id);
-    if (!userRequest) {
-      return res.status(404).json({ error: "User request not found" });
-    }
+    const userRequest = await RequestModel.findById(id);
     res.status(200).json(userRequest);
   } catch (error) {
     console.error("Error fetching user request:", error);
@@ -53,22 +45,12 @@ export const getUserRequestById = async (req, res) => {
   }
 };
 
-// Controller function to delete all user requests
-export const deleteAllRequests = async (req, res) => {
-    try {
-        await UserRequestModel.deleteMany({});
-        res.status(200).json({ message: "All user requests deleted successfully" });
-    } catch (error) {
-        console.error("Error deleting all user requests:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-};
 
-// Controller function to delete a user request
-export const deleteUserRequest = async (req, res) => {
+// function to delete a user request
+export const deleteRequest = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedUserRequest = await UserRequestModel.findByIdAndDelete(id);
+    const deletedUserRequest = await RequestModel.findByIdAndDelete(id);
     if (!deletedUserRequest) {
       return res.status(404).json({ error: "User request not found" });
     }
@@ -81,31 +63,20 @@ export const deleteUserRequest = async (req, res) => {
 
 
 // Controller function to update a user request
-export const updateUserRequest = async (req, res) => {
+export const updateRequest = async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
-    let statusMessage = "";
-  
-    if (status === "verified") {
-      statusMessage = "Verified";
-    } else if (status === "not-verified") {
-      statusMessage = "Not Verified";
-    } else if (status === "denied") {
-      statusMessage = "Denied";
+   
+  const request = await RequestModel.findById(id)
+    if(status){
+      request.status = status
+      const updatedRequest = await request.save()
+      res.json(updatedRequest)
+    } else{
+      res.json(request)
     }
-  
-    const updatedUserRequest = await UserRequestModel.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
-  
-    if (!updatedUserRequest) {
-      return res.status(404).json({ error: "User request not found" });
-    }
-  
-    res.status(200).json({ status: statusMessage });
+    
   } catch (error) {
     console.error("Error updating user request:", error);
     res.status(500).json({ error: "Internal Server Error" });

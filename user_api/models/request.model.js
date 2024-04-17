@@ -19,4 +19,5 @@ const userRequestSchema = new mongoose.Schema({
 });
 
 // Create a model for user request
-export const UserRequestModel = mongoose.model('UserRequest', userRequestSchema, "user_requests");
+const RequestModel = mongoose.model('UserRequest', userRequestSchema, "user_requests");
+export default RequestModel;

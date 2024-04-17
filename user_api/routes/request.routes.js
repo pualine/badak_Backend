@@ -1,16 +1,15 @@
 // request.routes.js
 import express from 'express';
-import { createUserRequest, deleteAllRequests, deleteUserRequest, getAllUserRequests, getUserRequestById, updateUserRequest } from "../controllers/request.controllers.js"
+import { createRequest, deleteRequest, getAllRequests, getRequestById, updateRequest} from "../controllers/request.controllers.js"
 
 const router = express.Router();
 
 // POST route to handle user login requests
-router.post('/', createUserRequest);
-router.get('/', getAllUserRequests);
-router.get('/:id', getUserRequestById)
-router.delete('/:id', deleteUserRequest);
-router.delete('/', deleteAllRequests)
-router.patch('/:id', updateUserRequest);
+router.post('/',createRequest);
+router.get('/', getAllRequests);
+router.get('/:id', getRequestById)
+router.delete('/:id', deleteRequest);
+router.patch('/:id', updateRequest);
 
 
 export default router;
