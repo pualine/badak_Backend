@@ -1,13 +1,49 @@
 import UserModel from "../models/user.models.js";
 import errorHandler from "../middlewares/error.middleware.js";
 import generateToken from "../token/token.js";
+import bcrypt from "bcrypt"
+import hashPassword from "../utils/hashPassword.js"
 
 // Create a new user and return a success message
+// export const createUser = async (req, res, next) => {
+
+//   const userExist = await UserModel.findOne({ email: req?.body?.email });
+
+//   if (userExist) throw new errorHandler("User already exist");
+//   try {
+//     const user = await UserModel.create({ ...req.body });
+//     if (user) {
+//       return res.status(201).json({
+//         message: "User created successfully",
+//         user: user,
+//       });
+//     } else {
+//       return res.status(404).json({
+//         error: "Error creating new user",
+//       });
+//     }
+//   } catch (error) {
+//     next(error); // Pass the error to the error handler
+//   }
+// };
+
+
+
 export const createUser = async (req, res, next) => {
   const userExist = await UserModel.findOne({ email: req?.body?.email });
-  if (userExist) throw new errorHandler("User already exist");
+  const { email, password, firstName, lastName } = req.body;
+  
+  if (userExist) {
+    throw new errorHandler("User already exists");
+  }
+
   try {
-    const user = await UserModel.create({ ...req.body });
+    // Hash the password before storing it
+    const hashedPassword = await hashPassword(password);
+
+    // Create the user with the hashed password
+    const user = await UserModel.create({ ...req.body, password: hashedPassword });
+
     if (user) {
       return res.status(201).json({
         message: "User created successfully",
@@ -23,6 +59,7 @@ export const createUser = async (req, res, next) => {
   }
 };
 
+
 // Function to check login credentials
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -32,11 +69,11 @@ export const loginUser = async (req, res) => {
 
     // Perform authentication
     if (!user) {
-      return res.status(401).json({ error: "Invalid username email address" });
+      return res.status(401).json({ error: "Invalid username or email address" });
     }
 
     // Compare the provided password with the hashed password from the database
-    const passwordMatch = await comparePasswords(password, user.password);
+    const passwordMatch = bcrypt.compareSync(password, user.password);
     if (!passwordMatch) {
       return res.status(401).json({ error: "Invalid password" });
     }
