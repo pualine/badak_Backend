@@ -10,8 +10,10 @@ const authenticate = async (req, res, next) => {
     }
 
     try {
+        // Get accessToken
+        const accessToken = token.split(' ')[1];
         // Verify token asynchronously
-        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const decodedToken = jwt.verify(accessToken, process.env.ACCESS_GENERATED_ID);
 
         // Attach the decodedToken to the user request
         req.user = decodedToken.user;
